@@ -26,13 +26,26 @@ export default async function Page({
     notFound();
   }
 
+  const nextRoundIndex = round.index + 1;
+
+  const nextRound = await prisma.round.findUnique({
+    where: {
+      gameId_index: {
+        gameId: Number(gameId),
+        index: nextRoundIndex,
+      },
+    },
+  });
+
   return (
     <GameScreen
-      question={round.question}
       answers={round.answers}
-      team1={round.game?.teams[0] ?? { name: "Team 1", score: 0 }}
-      team2={round.game?.teams[1] ?? { name: "Team 2", score: 0 }}
+      team1={round.game?.teams[0] ?? { name: "Team 1", score: 0, id: 1 }}
+      team2={round.game?.teams[1] ?? { name: "Team 2", score: 0, id: 2 }}
       modifier={round.modifier ?? 1}
+      gameId={Number(gameId)}
+      roundId={Number(roundId)}
+      nextRoundId={nextRound?.id}
     />
   );
 }

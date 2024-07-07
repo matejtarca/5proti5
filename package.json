@@ -12,7 +12,9 @@
     "@prisma/client": "5.16.1",
     "next": "14.2.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "url-loader": "^4.1.1",
+    "use-sound": "^4.0.3"
   },
   "devDependencies": {
     "@types/node": "^20",
