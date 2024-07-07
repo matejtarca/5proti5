@@ -6,7 +6,9 @@ export default function ErrorCircle({
   return (
     <img
       src="/5proti5-error.png"
-      className={isLarge ? "w-[200px] h-[200px]" : "w-[50px] h-[50px]"}
+      className={`${
+        isLarge ? "w-[200px] h-[200px]" : "w-[50px] h-[50px]"
+      } scale-up`}
     />
   );
 }

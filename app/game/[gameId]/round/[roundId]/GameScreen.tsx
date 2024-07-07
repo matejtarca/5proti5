@@ -222,24 +222,26 @@ export default function GameScreen(props: Props) {
         style={{ textShadow: "1px 1px 2px black" }}
       >
         {sortedAnswers.map((answer) => (
-          <div
-            className={`bg-orange-200 w-full border-x-4 pl-4 flex flex-row items-center mb-[2px] ${
-              shownAnswers.includes(answer.index)
-                ? "answer-line-shown"
-                : "answer-line py-1"
-            }`}
-            key={answer.id}
-          >
-            <div>{answer.index}.</div>
+          <div className="relative" key={answer.id}>
             {shownAnswers.includes(answer.index) && (
-              <>
-                <div className="ml-4">{answer.answer}</div>
-                <div className="flex-grow"></div>
-                <div className="bg-[#FBB53C] py-1 w-[60px] text-right pr-2">
-                  <div>{answer.points}</div>
+              <div className="absolute top-0 left-0 z-10 w-full">
+                <div
+                  className={`bg-orange-200 w-full border-x-4 pl-4 flex flex-row items-center mb-[2px] answer-line-shown`}
+                >
+                  <div>{answer.index}.</div>
+                  <div className="ml-4">{answer.answer}</div>
+                  <div className="flex-grow"></div>
+                  <div className="bg-[#FBB53C] py-1 w-[60px] text-right pr-2">
+                    <div>{answer.points}</div>
+                  </div>
                 </div>
-              </>
+              </div>
             )}
+            <div
+              className={`bg-orange-200 w-full border-x-4 pl-4 flex flex-row items-center mb-[2px] answer-line py-1 absolute top-0 left-0`}
+            >
+              <div>{answer.index}.</div>
+            </div>
           </div>
         ))}
       </div>
