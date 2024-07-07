@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Round {
+  id        Int      @id @default(autoincrement())
+  index     Int
+  createdAt DateTime @default(now())
+  question  String
+  answers   Answer[]
+  game      Game?    @relation(fields: [gameId], references: [id])
+  gameId    Int?
+
+  @@unique([gameId, index])
+}
+
+model Answer {
+  id        Int      @id @default(autoincrement())
+  index     Int
+  createdAt DateTime @default(now())
+  roundId   Int
+  round     Round    @relation(fields: [roundId], references: [id])
+  answer    String
+  points    Int      @default(0)
+
+  @@unique([roundId, index])
+}
+
+model Team {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  score     Int      @default(0)
+  Game      Game     @relation(fields: [gameId], references: [id])
+  gameId    Int
+}
+
+model Game {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  teams     Team[]
+  rounds    Round[]
+}
