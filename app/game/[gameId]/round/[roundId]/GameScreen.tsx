@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import ErrorCircle from "@/components/ErrorCircle";
 import ScoreBox from "@/components/ScoreBox";
 
+const maxErrors = 3;
+
 type Props = {
   modifier: number;
   answers: {
@@ -82,7 +84,9 @@ export default function GameScreen(props: Props) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (gameEndedRef.current && event.key === "n") {
         if (props.nextRoundId) {
-          router.push(`/game/${props.gameId}/round/${props.nextRoundId}`);
+          router.push(
+            `/game/${props.gameId}/music?nextRoundId=${props.nextRoundId}`
+          );
         } else {
           router.push(`/game/${props.gameId}/end`);
         }
@@ -98,6 +102,13 @@ export default function GameScreen(props: Props) {
           return;
         }
 
+        if (
+          shownAnswersRef.current.length >= 2 &&
+          teamOnTurnRef.current === null
+        ) {
+          return;
+        }
+
         const answer = sortedAnswers.find((a) => a.index === index);
         if (!answer) {
           return;
@@ -110,17 +121,17 @@ export default function GameScreen(props: Props) {
       if (event.key === "x") {
         if (teamOnTurnRef.current === 1) {
           if (isFinalAnswerRef.current) {
-            setTeam1Errors(3);
+            setTeam1Errors(maxErrors);
           } else {
-            setTeam1Errors((prev) => Math.min(prev + 1, 3));
+            setTeam1Errors((prev) => Math.min(prev + 1, maxErrors));
           }
         }
 
         if (teamOnTurnRef.current === 2) {
           if (isFinalAnswerRef.current) {
-            setTeam2Errors(3);
+            setTeam2Errors(maxErrors);
           } else {
-            setTeam2Errors((prev) => Math.min(prev + 1, 3));
+            setTeam2Errors((prev) => Math.min(prev + 1, maxErrors));
           }
         }
 
@@ -156,7 +167,11 @@ export default function GameScreen(props: Props) {
 
   // when errors are added
   useEffect(() => {
-    if (isFinalAnswer && team1Errors === 3 && team2Errors === 3) {
+    if (
+      isFinalAnswer &&
+      team1Errors === maxErrors &&
+      team2Errors === maxErrors
+    ) {
       const winningTeam = teamOnTurn === 1 ? 2 : 1;
       setTeamScore({
         teamId: teams[winningTeam - 1].id,
@@ -169,11 +184,11 @@ export default function GameScreen(props: Props) {
     if (team1Errors > 0 || team2Errors > 0) {
       playBuzzer();
     }
-    if (teamOnTurn === 1 && team1Errors === 3 && !isFinalAnswer) {
+    if (teamOnTurn === 1 && team1Errors === maxErrors && !isFinalAnswer) {
       setTeamOnTurn(2);
       setIsFinalAnswer(true);
     }
-    if (teamOnTurn === 2 && team2Errors === 3 && !isFinalAnswer) {
+    if (teamOnTurn === 2 && team2Errors === maxErrors && !isFinalAnswer) {
       setTeamOnTurn(1);
       setIsFinalAnswer(true);
     }
