@@ -18,6 +18,7 @@ model Round {
   answers   Answer[]
   game      Game?    @relation(fields: [gameId], references: [id])
   gameId    Int?
+  modifier  Int?     @default(1)
 
   @@unique([gameId, index])
 }
