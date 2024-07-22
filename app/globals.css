@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+.game-bg {
     background-image: url('/5proti5-bg.png');
     background-size: cover;
     background-repeat: no-repeat;
