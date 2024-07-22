@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -77,7 +78,7 @@ export default function GameScreen(props: Props) {
 
   const sortedAnswers = useMemo(
     () => answers.sort((a, b) => a.index - b.index),
-    [answers],
+    [answers]
   );
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export default function GameScreen(props: Props) {
       if (gameEndedRef.current && event.key === "n") {
         if (props.nextRoundId) {
           router.push(
-            `/game/${props.gameId}/music?nextRoundId=${props.nextRoundId}`,
+            `/game/${props.gameId}/music?nextRoundId=${props.nextRoundId}`
           );
         } else {
           router.push(`/game/${props.gameId}/end`);
