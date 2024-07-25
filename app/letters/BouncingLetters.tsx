@@ -73,7 +73,7 @@ const BouncingLetters = ({ text }: { text: string }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <canvas ref={canvasRef} width={700} height={700} />;
+  return <canvas ref={canvasRef} width={500} height={500} />;
 };
 
 export default BouncingLetters;

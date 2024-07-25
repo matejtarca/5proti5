@@ -92,14 +92,16 @@ export default function GameScreen(props: Props) {
           router.push(`/game/${props.gameId}/end`);
         }
       }
-      if (gameEndedRef.current) {
-        return;
-      }
 
       if (event.key >= "0" && event.key <= "9") {
         const index = Number(event.key);
 
         if (shownAnswersRef.current.includes(index)) {
+          return;
+        }
+
+        if (gameEndedRef.current) {
+          setShownAnswers((prev) => [...prev, index]);
           return;
         }
 
@@ -117,6 +119,10 @@ export default function GameScreen(props: Props) {
 
         setShownAnswers((prev) => [...prev, index]);
         setCurrentScore((prev) => prev + answer.points);
+      }
+
+      if (gameEndedRef.current) {
+        return;
       }
 
       if (event.key === "x") {
@@ -279,7 +285,7 @@ export default function GameScreen(props: Props) {
             score={team1.score}
             errors={team1Errors}
             teamName={team1.name}
-            teamOnTurn={teamOnTurn === 1}
+            teamOnTurn={teamOnTurn === 1 || gameEnded}
           />
         </div>
         <div className="flex flex-col items-center gap-2">
@@ -288,7 +294,7 @@ export default function GameScreen(props: Props) {
             errors={team2Errors}
             errorsReversed
             teamName={team2.name}
-            teamOnTurn={teamOnTurn === 2}
+            teamOnTurn={teamOnTurn === 2 || gameEnded}
           />
         </div>
       </div>
