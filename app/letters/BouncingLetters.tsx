@@ -27,6 +27,7 @@ function clamp(value: number, min: number, max: number): number {
 const BouncingLetters = ({ text }: { text: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const letters = useRef<Letter[]>([]);
+  const [isVisible, setIsVisible] = React.useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -61,7 +62,7 @@ const BouncingLetters = ({ text }: { text: string }) => {
         if (letter.y < 40 || letter.y > height) letter.vy *= -1;
 
         // Draw letter
-        ctx.font = "60px Arial";
+        ctx.font = "70px Arial";
         ctx.fillStyle = letter.color;
         ctx.fillText(letter.char, letter.x, letter.y);
       });
@@ -73,7 +74,28 @@ const BouncingLetters = ({ text }: { text: string }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <canvas ref={canvasRef} width={500} height={500} />;
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === " ") {
+        setIsVisible((prev) => !prev);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={600}
+      height={600}
+      className={isVisible ? "" : "hidden"}
+    />
+  );
 };
 
 export default BouncingLetters;
