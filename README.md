@@ -33,3 +33,6 @@ pnpm dev
   - `left right arrow keys` chooses which team is playing the question (has to be pressed after second answer is shown, but can be pressed earlier)
   - `n` goes to the next round.
 - The game is trying to follow the rules of "5 proti 5" as closely as possible and won't allow you to do unexpected things.
+
+## Preview
+![preview](./public/preview.png)
